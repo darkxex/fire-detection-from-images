@@ -8,7 +8,11 @@ from PIL import Image
 
 # Model
 # model = torch.hub.load('C:/Users/darkx/Documents/GitHub/yolov5', 'yolov5s')  # force_reload=True to update
-model = torch.hub.load('C:/Users/darkx/Documents/GitHub/yolov5', 'custom', 'pytorch/object-detection/yolov5/experiment1/best.pt', source='local')  # local repo
+firedetect = False
+if(firedetect == True):
+    model = torch.hub.load('C:/Users/darkx/Documents/GitHub/yolov5', 'custom', 'pytorch/object-detection/yolov5/experiment1/best.pt', source='local')  # local repo
+else:
+    model = torch.hub.load('C:/Users/darkx/Documents/GitHub/yolov5', 'custom', 'C:/Users/darkx/Desktop/entrenamiento logos/best.pt', source='local')  # local repo
 
 
 def yolo(im, size=640):
@@ -35,8 +39,12 @@ inputs = gr.inputs.Image(type='pil', label="Original Image")
 outputs = gr.outputs.Image(type="pil", label="Output Image")
 
 #Se reescribe el HTML para mejor interpretacion del codigo.
-title = "Detectar Fuego / Proyecto Utem"
-description = "Red neuronal basada en YOLOv5 entrenada para detectar fuego."
+if (firedetect == True):
+    title = "Detectar Fuego / Proyecto Utem"
+    description = "Red neuronal basada en YOLOv5 entrenada para detectar fuego."
+else:
+    title = "Detectar Logo Inflamable / Proyecto Utem"
+    description = "Red neuronal basada en YOLOv5 entrenada para detectar Logos Inflamables."
 article = "<p style='text-align: center'>YOLOv5 is a family of compound-scaled object detection models trained on the COCO dataset, and includes " \
           "simple functionality for Test Time Augmentation (TTA), model ensembling, hyperparameter evolution, " \
           "and export to ONNX, CoreML and TFLite. <a href='https://github.com/ultralytics/yolov5'>Source code</a> |" \
@@ -44,6 +52,7 @@ article = "<p style='text-align: center'>YOLOv5 is a family of compound-scaled o
 
 
 #se agrega la imagen de un perro como ejemplo para ver si lo detectaba como fuego.
-examples = [['images/pan-fire.jpg'], ['images/fire-basket.jpg'], ['images/perro.jpg']]
+examples = [['images/pan-fire.jpg'], ['images/fire-basket.jpg'], ['images/perro.jpg'], ['images/infla.jpg']]
 gr.Interface(yolo, inputs, outputs, title=title, description=description, article=article, examples=examples).launch(
     debug=True)
+    
